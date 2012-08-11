@@ -48,12 +48,14 @@ class ConfigLoader
 		opt::options_description m_desc; // Description des options
 		opt::options_description m_opts; // Les options
 		opt::variables_map m_vm; // Les variables
+		std::vector<std::string> m_unknown; // Options inconnues
 
 		config m_config; // La configuration
 
 		SDL_Rect parseSize(const std::string& size);
 		SDL_Rect maxSize(); // Taille max de l'écran (pour fullscreen)
 		void checkPaths(); // Supprime les images dont les fichiers sont invalides
+		void print(); // Affiche un compte rendu des options
 
 		ConfigLoader();
 		ConfigLoader(const ConfigLoader&);

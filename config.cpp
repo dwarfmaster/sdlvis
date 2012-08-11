@@ -3,22 +3,22 @@
 ConfigLoader::ConfigLoader(int argc, char *argv[])
 	: m_desc("Allowed options")
 {
-	std::string home=getenv("HOME");
+	std::string home = getenv("HOME");
 	path_t conf_path;
 
 	// Les options
 	opt::options_description generic("Generic options");
 	generic.add_options()
 		("help,h", "Produce help message")
-		("version,V", "Print version, don't launch the program")
-		("config,c", opt::value<path_t>(&conf_path)->default_value(home + "/.sdlvis.conf"), "Use a configuration file")
+		("version", "Print version, don't launch the program")
+		("config,c", opt::value<path_t>(&conf_path)->default_value(home + "/.sdlvis.cfg"), "Use a configuration file")
 		;
 
 	opt::options_description verbosity("Verbosity options");
 	verbosity.add_options()
 		("mute,m", "Print no information, disable verbose and highverb")
 		("verbose,v", "Print more informations, disable highverb and disabled by mute")
-		("highverb", "Print lots of informations, disabled by mute and verbose")
+		("highverb,V", "Print lots of informations, disabled by mute and verbose")
 		;
 
 	opt::options_description draw("Drawing options");
@@ -51,18 +51,23 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 
 	// Classement
 	opt::options_description cmdline;
-	cmdline.add(generic).add(verbosity).add(draw).add(load).add(hidden);
+	cmdline.add(generic).add(verbosity).add(draw).add(load).add(screen).add(hidden);
 	opt::options_description conf;
-	conf.add(verbosity).add(draw).add(load).add(hidden);
-	m_desc.add(generic).add(verbosity).add(draw).add(load);
+	conf.add(verbosity).add(draw).add(load).add(screen).add(hidden);
+	m_desc.add(generic).add(verbosity).add(draw).add(screen).add(load);
 	m_opts.add(m_desc).add(hidden);
 
 	opt::positional_options_description pos;
 	pos.add("picture", -1);
 
 	// Lecture de la ligne de commande
-	opt::store( opt::command_line_parser(argc, argv).options(m_opts).positional(pos).run(), m_vm );
+	opt::parsed_options parsed = opt::command_line_parser(argc, argv)
+		.options(m_opts).positional(pos)
+		.allow_unregistered().run();
+	opt::store(parsed, m_vm);
 	opt::notify(m_vm);
+
+	m_unknown = opt::collect_unrecognized(parsed.options, opt::exclude_positional);
 
 	// Lecture du fichier
 	boost::filesystem::ifstream file(conf_path);
@@ -96,7 +101,9 @@ bool ConfigLoader::load()
 	m_config.redim = m_vm.count("redim");
 	m_config.real = m_vm.count("real");
 
-	if( m_config.time != 0 )
+	if( m_config.time == 0 )
+		m_config.diap = false;
+	else
 		m_config.diap = true;
 
 	m_config.fullscreen = m_vm.count("fullscreen") || m_vm.count("fullsize");
@@ -114,13 +121,15 @@ bool ConfigLoader::load()
 	m_config.prep = m_vm.count("prepare") || m_config.begin;
 
 	if( !m_vm.count("picture") )
-		throw std::string("Aucune image n'a été donnée.");
+		throw std::string("There is no picture.");
 	m_config.paths = m_vm["picture"].as< std::vector<path_t> >();
 
 	if( !m_vm.count("dontcheck") )
 		checkPaths();
 	if( m_config.paths.empty() )
-		throw std::string("Aucune image valable n'a été donnée.");
+		throw std::string("There is no usable picture.");
+
+	print();
 
 	return true;
 }
@@ -134,16 +143,20 @@ SDL_Rect ConfigLoader::parseSize(const std::string& size)
 {
 	std::string tmp(""); // sert à stocker la string du nombre
 	bool cont = true, first = true;
+	SDL_Rect rect;
+	rect.x = rect.y = 0;
+	rect.w = 800;
+	rect.h = 600;
 	for(size_t k = 0; cont; ++k)
 	{
 		if(k >= size.size())
 		{
 			unsigned int nb = 0;
-			std::istringstream(tmp) >> nb;
+			nb = sdl::atoi(tmp);
 			if(first)
-				m_config.size.w = nb;
+				rect.w = nb;
 			else
-				m_config.size.h = nb;
+				rect.h = nb;
 			cont = false;
 		}
 		else if(size[k] >= '0' 
@@ -153,30 +166,32 @@ SDL_Rect ConfigLoader::parseSize(const std::string& size)
 				|| size[k] == 'x')
 		{
 			unsigned int nb = 0;
-			std::istringstream(tmp) >> nb;
+			nb = sdl::atoi(tmp);
 			if(first)
 			{
-				m_config.size.w = nb;
+				rect.w = nb;
 				tmp = "";
 				first = false;
 			}
 			else
 			{
-				m_config.size.h = nb;
+				rect.h = nb;
 				cont = false;
 			}
 		}
-		else
+		else // Peu probable
 		{
 			unsigned int nb = 0;
 			std::istringstream(tmp) >> nb;
 			if(first)
-				m_config.size.w = nb;
+				rect.w = nb;
 			else
-				m_config.size.h = nb;
+				rect.h = nb;
 			cont=false;
 		}
 	}
+
+	return rect;
 }
 
 SDL_Rect ConfigLoader::maxSize()
@@ -197,8 +212,48 @@ void ConfigLoader::checkPaths()
 	{
 		if( !boost::filesystem::exists(*it)
 				|| !boost::filesystem::is_regular_file(*it) )
-			m_config.paths.erase(it);
+		{
+			if( m_config.verb >= config::HIGH )
+				std::cout << "Warning : the file " << it->string() << " is not regular or inexistant." << std::endl;
+
+			std::vector<path_t>::iterator tit = it;
+			--it;
+			m_config.paths.erase(tit);
+		}
 	}
 }
 
+void ConfigLoader::print()
+{
+	if( m_config.verb > config::MUTE
+			&& !m_unknown.empty() )
+	{
+		std::cout << "Warning, this options are unknown :" << std::endl;
+		for(size_t i=0; i < m_unknown.size(); ++i)
+			std::cout << "\t>> " << m_unknown[i] << std::endl;
+		std::cout << std::endl;
+	}
+
+	if( m_config.verb >= config::VERBOSE )
+	{
+		std::cout << "Options :" << std::endl;
+		std::cout << "\tPrint number : " << (m_config.number ? "yes" : "no") << std::endl;
+		std::cout << "\tPrint picture name : " << (m_config.text ? "yes" : "no") << std::endl;
+		std::cout << "\tRedimention smaller pictures : " << (m_config.redim ? "yes" : "no") << std::endl;
+		std::cout << "\tRedimention bigger pictures : " << (!m_config.real ? "yes" : "no") << std::endl;
+		std::cout << "\tDiaporama : " << (m_config.diap ? "yes" : "no") << std::endl;
+		if(m_config.diap)
+			std::cout << "\t\t-> time : " << m_config.time << std::endl;
+		std::cout << "\tFullscreen : " << (m_config.fullscreen ? "yes" : "no") << std::endl;
+		std::cout << "\tWindow size : " << m_config.size.w << "x" << m_config.size.h << std::endl;
+		std::cout << "\tPrepare pictures : " << (m_config.prep ? "yes" : "no") << std::endl;
+		std::cout << "\tPreload pictures : " << (m_config.begin ? "yes" : "no") << std::endl;
+		if( m_config.verb >= config::HIGH )
+		{
+			std::cout << "\tPictures to load (" << m_config.paths.size() << ") :" << std::endl;
+			for(size_t i=0; i < m_config.paths.size(); ++i)
+				std::cout << "\t\t" << i+1 << "> " << m_config.paths[i].string() << std::endl;
+		}
+	}
+}
 
