@@ -24,6 +24,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 	opt::options_description draw("Drawing options");
 	draw.add_options()
 		("text,t", "Print the name of the picture on the screen")
+		("pretext,T", "Preload the names of the pictures")
 		("number,n", "Print the numbre of the picture on the screen")
 		("redim,r", "Resize the pictures smaller than the screen")
 		("real,R", "No resize the pictures largest than the screen")
@@ -98,7 +99,8 @@ bool ConfigLoader::load()
 		m_config.verb = config::NORMAL;
 
 	m_config.number = m_vm.count("number");
-	m_config.text = m_vm.count("text");
+	m_config.ptext = m_vm.count("pretext");
+	m_config.text = m_vm.count("text") || m_config.ptext;
 	m_config.redim = m_vm.count("redim");
 	m_config.real = m_vm.count("real");
 	m_config.deform = m_vm.count("deform");
@@ -241,6 +243,8 @@ void ConfigLoader::print()
 		std::cout << "Options :" << std::endl;
 		std::cout << "\tPrint number : " << (m_config.number ? "yes" : "no") << std::endl;
 		std::cout << "\tPrint picture name : " << (m_config.text ? "yes" : "no") << std::endl;
+		if(m_config.text)
+			std::cout << "\t\t-> Preload text : " << (m_config.ptext ? "yes" : "no") << std::endl;
 		std::cout << "\tRedimension smaller pictures : " << (m_config.redim ? "yes" : "no") << std::endl;
 		std::cout << "\tRedimension bigger pictures : " << (!m_config.real ? "yes" : "no") << std::endl;
 		std::cout << "\tDeform redimensionned pictures : " << (!m_config.deform ? "yes" : "no") << std::endl;

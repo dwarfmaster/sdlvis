@@ -17,6 +17,7 @@ typedef boost::filesystem::path path_t;
 struct config
 {
 	bool text; // Afficher le nom de l'image
+	bool ptext;
 	bool number; // Afficher son numéro
 
 	SDL_Rect size; // Taille de la fenêtre
