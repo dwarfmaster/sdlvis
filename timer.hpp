@@ -10,6 +10,8 @@ class Timer
 		Timer(unsigned int time, boost::function<void ()> cb);
 		void play();
 		void pause();
+		void toggle();
+		void reset(); // Remet le temps restant au max
 		void update();
 
 	private:

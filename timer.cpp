@@ -1,7 +1,7 @@
 #include "timer.hpp"
 
-Timer::Timer(unsigned int time, boost::function<void ()> cb)
-	: m_callback(cb), m_time(time), m_lastTime(SDL_GetTicks()), m_timeStay(m_time), m_pause(true)
+	Timer::Timer(unsigned int time, boost::function<void ()> cb)
+: m_callback(cb), m_time(time), m_lastTime(SDL_GetTicks()), m_timeStay(m_time), m_pause(true)
 {
 }
 
@@ -38,3 +38,16 @@ void Timer::update()
 	m_lastTime = SDL_GetTicks();
 }
 
+void Timer::toggle()
+{
+	if(m_pause)
+		play();
+	else
+		pause();
+}
+
+void Timer::reset()
+{
+	m_lastTime = SDL_GetTicks();
+	m_timeStay = m_time;
+}
