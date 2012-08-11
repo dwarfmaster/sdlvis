@@ -27,6 +27,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("number,n", "Print the numbre of the picture on the screen")
 		("redim,r", "Resize the pictures smaller than the screen")
 		("real,R", "No resize the pictures largest than the screen")
+		("deform,d", "Deform the picture when they are resized to fill the window")
 		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama)")
 		;
 
@@ -100,6 +101,7 @@ bool ConfigLoader::load()
 	m_config.text = m_vm.count("text");
 	m_config.redim = m_vm.count("redim");
 	m_config.real = m_vm.count("real");
+	m_config.deform = m_vm.count("deform");
 
 	if( m_config.time == 0 )
 		m_config.diap = false;
@@ -239,8 +241,9 @@ void ConfigLoader::print()
 		std::cout << "Options :" << std::endl;
 		std::cout << "\tPrint number : " << (m_config.number ? "yes" : "no") << std::endl;
 		std::cout << "\tPrint picture name : " << (m_config.text ? "yes" : "no") << std::endl;
-		std::cout << "\tRedimention smaller pictures : " << (m_config.redim ? "yes" : "no") << std::endl;
-		std::cout << "\tRedimention bigger pictures : " << (!m_config.real ? "yes" : "no") << std::endl;
+		std::cout << "\tRedimension smaller pictures : " << (m_config.redim ? "yes" : "no") << std::endl;
+		std::cout << "\tRedimension bigger pictures : " << (!m_config.real ? "yes" : "no") << std::endl;
+		std::cout << "\tDeform redimensionned pictures : " << (!m_config.deform ? "yes" : "no") << std::endl;
 		std::cout << "\tDiaporama : " << (m_config.diap ? "yes" : "no") << std::endl;
 		if(m_config.diap)
 			std::cout << "\t\t-> time : " << m_config.time << std::endl;

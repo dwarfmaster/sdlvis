@@ -24,6 +24,7 @@ struct config
 
 	bool redim; // Redimentionner les images de tailles inférieures
 	bool real; // Faut-il laisser dépasser les images plus grandes
+	bool deform; // Déforme l'image pour remplir au mieux la fenêtre
 
 	bool diap; // Diaporama
 	Uint32 time; // Temps en millisecondes entre 2 images
