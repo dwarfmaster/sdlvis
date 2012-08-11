@@ -1,5 +1,5 @@
 LDFLAGS=`sdl-config --libs` `pkg-config --libs SDLP_event SDLP_tools SDL_image SDL_gfx` -lboost_system -lboost_filesystem -lboost_program_options
-CXXFLAGS=`sdl-config --cflags` `pkg-config --cflags SDLP_event SDLP_tools SDL_image SDL_gfx` -g
+CXXFLAGS=`sdl-config --cflags` `pkg-config --cflags SDLP_event SDLP_tools SDL_image SDL_gfx` -Wall -g
 OBJS=main.o print.o config.o
 PROG=sdlvis
 
