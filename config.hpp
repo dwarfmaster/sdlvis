@@ -30,6 +30,7 @@ struct config
 
 	bool diap; // Diaporama
 	Uint32 time; // Temps en millisecondes entre 2 images
+	bool loop; // Revenir au début après la fin et inversement
 
 	bool begin; // Charger toutes les images au démarrage
 	bool prep; // Préparer toutes le images au démarrage
