@@ -78,8 +78,8 @@ Printer::~Printer()
 
 	if( !m_config.begin )
 	{
-			for(size_t i=0; i < m_picts.size(); ++i)
-				SDL_FreeSurface( m_picts[i].surf );
+		for(size_t i=0; i < m_picts.size(); ++i)
+			SDL_FreeSurface( m_picts[i].surf );
 	}
 	else
 		SDL_FreeSurface( m_picts[m_act].surf );
@@ -412,9 +412,12 @@ void Printer::loadKeys(sdl::Event* event)
 	event->addPEvent( "last", &m_keys[LAST],
 			boost::bind(&Printer::last, this) );
 
-	m_keys[TOGGLE].addKey(SDLK_SPACE);
-	event->addPEvent( "pause", &m_keys[TOGGLE],
-			boost::bind(&Timer::toggle, m_diapTimer) );
+	if( m_config.diap)
+	{
+		m_keys[TOGGLE].addKey(SDLK_SPACE);
+		event->addPEvent( "pause", &m_keys[TOGGLE],
+				boost::bind(&Timer::toggle, m_diapTimer) );
+	}
 }
 
 
