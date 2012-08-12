@@ -20,6 +20,9 @@
 		loadDiap();
 
 	loadFirst();
+
+	if( !m_config.mouse )
+		SDL_ShowCursor( SDL_DISABLE );
 }
 
 void Printer::run()

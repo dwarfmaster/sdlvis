@@ -28,6 +28,7 @@ struct config
 	bool real; // Faut-il laisser dépasser les images plus grandes
 	bool deform; // Déforme l'image pour remplir au mieux la fenêtre
 	bool inter; // Interactif
+	bool mouse; // Montrer la souri
 
 	bool diap; // Diaporama
 	Uint32 time; // Temps en millisecondes entre 2 images

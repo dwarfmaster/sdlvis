@@ -33,12 +33,13 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama)")
 		("loop,l", "After the last, go to first, and inverse")
 		("nointer", "Disable the keys")
+		("hidemouse,h", "Hide the mouse")
 		;
 
 	opt::options_description screen("Screen options");
 	screen.add_options()
 		("size,s", opt::value<std::string>()->composing(), "The size of the window, like --size 800x600")
-		("fullscreen,f", "Open the window in fullscreen mode")
+		("fullscreen,f", "Open the window in fullscreen mode, enable hidemouse")
 		("fullsize,F", "Set the window in fullscreen mode, with the size of the screen, override size and enable fullscreen")
 		;
 
@@ -130,6 +131,8 @@ bool ConfigLoader::load()
 		m_config.size.w = 800;
 		m_config.size.h = 600;
 	}
+
+	m_config.mouse = !m_vm.count("hidemouse") && !m_vm.count("fullscreen");
 
 	m_config.begin = m_vm.count("preload");
 	m_config.prep = m_vm.count("prepare") || m_config.begin;
