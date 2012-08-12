@@ -32,6 +32,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("deform,d", "Deform the picture when they are resized to fill the window")
 		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama)")
 		("loop,l", "After the last, go to first, and inverse")
+		("nointer", "Disable the keys")
 		;
 
 	opt::options_description screen("Screen options");
@@ -112,6 +113,7 @@ bool ConfigLoader::load()
 	m_config.real = m_vm.count("real");
 	m_config.deform = m_vm.count("deform");
 	m_config.loop = m_vm.count("loop");
+	m_config.inter = !m_vm.count("nointer");
 
 	if( m_config.time == 0 )
 		m_config.diap = false;

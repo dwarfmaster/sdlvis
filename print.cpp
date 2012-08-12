@@ -394,34 +394,37 @@ void Printer::loadKeys(sdl::Event* event)
 	event->addQuitKey(SDLK_q);
 	event->addQuitKey(SDLK_ESCAPE);
 
-	m_keys.resize(NUMBER);
-
-	m_keys[NEXT].addKey(SDLK_RIGHT);
-	event->addPEvent( "next", &m_keys[NEXT],
-			boost::bind(&Printer::next, this, m_config.loop) );
-
-	m_keys[PREV].addKey(SDLK_LEFT);
-	event->addPEvent( "prev", &m_keys[PREV],
-			boost::bind(&Printer::prev, this, m_config.loop) );
-
-	m_keys[FIRST].addKey(SDLK_UP);
-	event->addPEvent( "first", &m_keys[FIRST],
-			boost::bind(&Printer::first, this) );
-
-	m_keys[LAST].addKey(SDLK_DOWN);
-	event->addPEvent( "last", &m_keys[LAST],
-			boost::bind(&Printer::last, this) );
-
-	if( m_config.diap)
+	if( m_config.inter )
 	{
-		m_keys[TOGGLE].addKey(SDLK_SPACE);
-		event->addPEvent( "pause", &m_keys[TOGGLE],
-				boost::bind(&Timer::toggle, m_diapTimer) );
-	}
+		m_keys.resize(NUMBER);
 
-	m_keys[TAA].addKey(SDLK_a);
-	event->addPEvent( "toggle_aa", &m_keys[TAA],
-			boost::bind(&Printer::toggleAA, this) );
+		m_keys[NEXT].addKey(SDLK_RIGHT);
+		event->addPEvent( "next", &m_keys[NEXT],
+				boost::bind(&Printer::next, this, m_config.loop) );
+
+		m_keys[PREV].addKey(SDLK_LEFT);
+		event->addPEvent( "prev", &m_keys[PREV],
+				boost::bind(&Printer::prev, this, m_config.loop) );
+
+		m_keys[FIRST].addKey(SDLK_UP);
+		event->addPEvent( "first", &m_keys[FIRST],
+				boost::bind(&Printer::first, this) );
+
+		m_keys[LAST].addKey(SDLK_DOWN);
+		event->addPEvent( "last", &m_keys[LAST],
+				boost::bind(&Printer::last, this) );
+
+		if( m_config.diap)
+		{
+			m_keys[TOGGLE].addKey(SDLK_SPACE);
+			event->addPEvent( "pause", &m_keys[TOGGLE],
+					boost::bind(&Timer::toggle, m_diapTimer) );
+		}
+
+		m_keys[TAA].addKey(SDLK_a);
+		event->addPEvent( "toggle_aa", &m_keys[TAA],
+				boost::bind(&Printer::toggleAA, this) );
+	}
 }
 
 
