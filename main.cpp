@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
 			throw std::string("Erreur à l'initialisation de la lib SDL_ttf.");
 
 		ConfigLoader conf(argc, argv);
-		conf.load();
+		if( !conf.load() )
+			return 0;
 
 		Printer print( conf.get() );
 		print.run();
