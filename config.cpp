@@ -84,7 +84,11 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 bool ConfigLoader::load()
 {
 	if( m_vm.count("version") )
-		std::cout << "\tsdlvis 0.1\n Luc Chabassier <luc.linux@mailoo.org>\n" << std::endl;
+		std::cout << "\tsdlvis " 
+#ifdef VERSION
+			<< VERSION 
+#endif
+			<< "\n Luc Chabassier <luc.linux@mailoo.org>\n" << std::endl;
 	if( m_vm.count("help") )
 		std::cout << m_desc << std::endl;
 	if( m_vm.count("version") )
