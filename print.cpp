@@ -411,6 +411,10 @@ void Printer::loadKeys(sdl::Event* event)
 	m_keys[LAST].addKey(SDLK_DOWN);
 	event->addPEvent( "last", &m_keys[LAST],
 			boost::bind(&Printer::last, this) );
+
+	m_keys[TOGGLE].addKey(SDLK_SPACE);
+	event->addPEvent( "pause", &m_keys[TOGGLE],
+			boost::bind(&Timer::toggle, m_diapTimer) );
 }
 
 
