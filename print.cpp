@@ -418,6 +418,10 @@ void Printer::loadKeys(sdl::Event* event)
 		event->addPEvent( "pause", &m_keys[TOGGLE],
 				boost::bind(&Timer::toggle, m_diapTimer) );
 	}
+
+	m_keys[TAA].addKey(SDLK_a);
+	event->addPEvent( "toggle_aa", &m_keys[TAA],
+			boost::bind(&Printer::toggleAA, this) );
 }
 
 

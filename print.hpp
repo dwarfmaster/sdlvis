@@ -62,7 +62,7 @@ class Printer
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur
 		TTF_Font* m_font;
 
-		enum{NEXT, PREV, FIRST, LAST, TOGGLE, NUMBER};
+		enum{NEXT, PREV, FIRST, LAST, TOGGLE, TAA, NUMBER};
 		std::vector< sdl::AnEvent > m_keys;
 
 		size_t m_act;
