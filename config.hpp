@@ -18,6 +18,7 @@ struct config
 {
 	bool text; // Afficher le nom de l'image
 	bool ptext;
+	bool textaa; // Utiliser l'anti aliasing pour le texte
 	bool number; // Afficher son numéro
 
 	SDL_Rect size; // Taille de la fenêtre
