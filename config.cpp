@@ -30,7 +30,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("redim,r", "Resize the pictures smaller than the screen")
 		("real,R", "No resize the pictures largest than the screen")
 		("deform,D", "Deform the picture when they are resized to fill the window")
-		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama)")
+		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama, and the minimum is 250)")
 		("loop,l", "After the last, go to first, and inverse")
 		("nointer", "Disable the keys")
 		("hidemouse,h", "Hide the mouse")
@@ -38,7 +38,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 
 	opt::options_description screen("Screen options");
 	screen.add_options()
-		("size,s", opt::value<std::string>()->composing(), "The size of the window, like --size 800x600")
+		("size,s", opt::value<std::string>()->composing(), "The size of the window, like --size 1600x900 (the minimum and default is 800x600)")
 		("fullscreen,f", "Open the window in fullscreen mode, enable hidemouse")
 		("fullsize,F", "Set the window in fullscreen mode, with the size of the screen, override size and enable fullscreen")
 		;
@@ -121,6 +121,9 @@ bool ConfigLoader::load()
 		m_config.diap = false;
 	else
 		m_config.diap = true;
+
+	if( m_config.time < 250 )
+		m_config.time = 250;
 
 	m_config.fullscreen = m_vm.count("fullscreen") || m_vm.count("fullsize");
 	if( m_vm.count("size") && !m_vm.count("fullsize") )
@@ -208,6 +211,11 @@ SDL_Rect ConfigLoader::parseSize(const std::string& size)
 			cont=false;
 		}
 	}
+
+	if( rect.w < 800 )
+		rect.w = 800;
+	if( rect.h < 600 )
+		rect.h = 600;
 
 	return rect;
 }
