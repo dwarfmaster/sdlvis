@@ -176,7 +176,7 @@ void Printer::loadFont()
 
 bool Printer::prepare(Picture* pict, bool force_guard)
 {
-	if( pict->prepared )
+	if( pict->prepared | pict->err )
 		return true;
 
 	pict->surf = IMG_Load( pict->path.string().c_str() );
@@ -184,6 +184,7 @@ bool Printer::prepare(Picture* pict, bool force_guard)
 	{
 		if( !mute() )
 			std::cout << "Erreur au chargement de l'image " << pict->path.string() << std::endl;
+		pict->err = true;
 		return false;
 	}
 
@@ -222,6 +223,12 @@ bool Printer::prepare(Picture* pict, bool force_guard)
 
 void Printer::load(Picture* pict, bool aa)
 {
+	if( pict->err )
+	{
+		pict->surf = m_err;
+		return;
+	}
+	
 	SDL_Surface* tmp = NULL;
 	if( pict->surf == NULL)
 		tmp = IMG_Load( pict->path.string().c_str() );
@@ -233,6 +240,7 @@ void Printer::load(Picture* pict, bool aa)
 		if( !mute() )
 			std::cout << "Erreur au chargement de l'image " << pict->path.string() << std::endl;
 		pict->surf = m_err;
+		pict->err = true;
 	}
 	else
 	{

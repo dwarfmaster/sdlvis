@@ -22,7 +22,7 @@ class Printer
 	private:
 		struct Picture
 		{
-			Picture() : path(""), surf(NULL), txt(NULL), redx(1.0), redy(1.0), prepared(false)
+			Picture() : path(""), surf(NULL), txt(NULL), redx(1.0), redy(1.0), prepared(false), err(false)
 			{}
 
 			path_t path;
@@ -34,6 +34,7 @@ class Printer
 			bool bigger; // Plus grand que la fenêtre
 			bool prepared; // Évite de préparer 2 foix
 			bool aa;
+			bool err;
 		};
 
 		config m_config;
