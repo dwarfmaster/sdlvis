@@ -37,6 +37,8 @@ struct config
 	bool begin; // Charger toutes les images au démarrage
 	bool prep; // Préparer toutes le images au démarrage
 
+	path_t dir; // Dossier des fichiers
+
 	enum Verbosity{MUTE, NORMAL, VERBOSE, HIGH};
 	Verbosity verb;
 

@@ -104,11 +104,9 @@ void Printer::load()
 
 		if( m_config.prep ) // Si on doit préparer les images au démarrage
 		{
-			if( prepare( &m_picts[i] ) )
-			{
-				if( m_config.begin ) // Si on doit charger les images au démarrage
-					load( &m_picts[i] );
-			}
+			prepare( &m_picts[i] );
+			if( m_config.begin ) // Si on doit charger les images au démarrage
+				load( &m_picts[i] );
 		}
 
 		if( m_config.ptext ) // Si on doit charger le texte au démarrage
@@ -126,7 +124,7 @@ void Printer::loadTxt(Picture* pict, bool aa, size_t number)
 	if( m_config.number )
 	{
 		name += "[";
-		name += sdl::itoa(number); // TODO
+		name += sdl::itoa(number);
 		name += "/";
 		name += sdl::itoa( m_picts.size() );
 		name += "]> ";
@@ -160,7 +158,8 @@ void Printer::loadFont()
 	if( verbose() )
 		std::cout << "Loading font." << std::endl;
 
-	m_font = TTF_OpenFont("font.ttf", 15);
+	std::string path = m_config.dir.string() + "/font.ttf";
+	m_font = TTF_OpenFont(path.c_str(), 15);
 
 	if( m_font == NULL )
 	{
@@ -360,7 +359,8 @@ void Printer::loadWindow()
 
 void Printer::loadErr()
 {
-	m_err = IMG_Load("err.png");
+	std::string path = m_config.dir.string() + "/err.png";
+	m_err = IMG_Load(path.c_str());
 	if(m_err == NULL)
 		throw std::string("Erreur au chargement de l'image d'erreur.");
 }

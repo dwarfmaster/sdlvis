@@ -29,7 +29,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("number,n", "Print the numbre of the picture on the screen")
 		("redim,r", "Resize the pictures smaller than the screen")
 		("real,R", "No resize the pictures largest than the screen")
-		("deform,d", "Deform the picture when they are resized to fill the window")
+		("deform,D", "Deform the picture when they are resized to fill the window")
 		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama)")
 		("loop,l", "After the last, go to first, and inverse")
 		("nointer", "Disable the keys")
@@ -48,6 +48,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("preload,L", "Load all the pictures at beginning, enable prepare")
 		("prepare,p", "Scan all the pictures at beginning")
 		("dontcheck", "Don't check the pictures paths at beginning")
+		("res",  opt::value<path_t>(&m_config.dir)->default_value("/usr/share/sdlvis/"), "Directory for files.")
 		;
 
 	opt::options_description hidden;
