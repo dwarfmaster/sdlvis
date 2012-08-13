@@ -1,6 +1,6 @@
 OBJS=main.o print.o config.o timer.o
 PROG=sdlvis
-VERSION=0.9
+VERSION=\"1.0\"
 LDFLAGS=`sdl-config --libs` `pkg-config --libs SDLP_event SDLP_tools SDL_image SDL_gfx SDL_ttf` -lboost_system -lboost_filesystem -lboost_program_options
 CXXFLAGS=`sdl-config --cflags` `pkg-config --cflags SDLP_event SDLP_tools SDL_image SDL_gfx SDL_ttf` -Wall -g -std=gnu++0x -DVERSION=$(VERSION)
 
