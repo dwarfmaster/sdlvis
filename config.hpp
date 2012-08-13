@@ -37,6 +37,10 @@ struct config
 	bool begin; // Charger toutes les images au démarrage
 	bool prep; // Préparer toutes le images au démarrage
 
+	bool timeout; // Fin du programme au bout d'un temps
+	Uint32 timeout_t; // Le temps
+	bool noquit; // Empêche de quitter manuellement
+
 	path_t dir; // Dossier des fichiers
 
 	enum Verbosity{MUTE, NORMAL, VERBOSE, HIGH};

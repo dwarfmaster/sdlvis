@@ -18,6 +18,8 @@
 
 	if( m_config.diap )
 		loadDiap();
+	if( m_config.timeout )
+		loadTimeout();
 
 	loadFirst();
 
@@ -37,8 +39,12 @@ void Printer::run()
 
 	if( m_config.diap )
 		m_diapTimer->play();
+	if( m_config.timeout )
+		m_timeout->play();
 
-	while( !event.quit() )
+	m_quit = false;
+
+	while( !m_quit )
 	{
 		event.update();
 		if( m_config.diap )
@@ -58,6 +64,10 @@ void Printer::run()
 		}
 
 		SDL_Flip(ecran);
+
+		m_quit = event.quit() && !m_config.noquit;
+		if( m_config.timeout )
+			m_timeout->update();
 
 		SDL_Delay( 1000/30 );
 	}
@@ -89,6 +99,9 @@ Printer::~Printer()
 	}
 	else if( m_picts[m_act].surf != m_err )
 		SDL_FreeSurface( m_picts[m_act].surf );
+
+	if( m_config.timeout )
+		delete m_timeout;
 }
 
 void Printer::load()
@@ -444,4 +457,14 @@ void Printer::loadKeys(sdl::Event* event)
 	}
 }
 
+void Printer::end()
+{
+	m_quit = true;
+}
+
+void Printer::loadTimeout()
+{
+	m_timeout = new Timer( m_config.timeout_t * 1000,
+			boost::bind(&Printer::end, this) );
+}
 

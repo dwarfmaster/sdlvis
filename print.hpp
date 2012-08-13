@@ -50,6 +50,7 @@ class Printer
 		void loadFirst();
 		void loadDiap();
 		void loadKeys(sdl::Event* event);
+		void loadTimeout();
 		void toggleAA();
 		bool m_aa;
 
@@ -58,6 +59,10 @@ class Printer
 		inline bool highverb();
 
 		Timer* m_diapTimer; // Le timer pour le diaporama
+		Timer* m_timeout;
+
+		void end();
+		bool m_quit;
 
 		SDL_Surface* ecran;
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur

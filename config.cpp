@@ -33,6 +33,8 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("diap,d", opt::value<Uint32>(&m_config.time)->default_value(0), "Time in milliseconds between two pictures in diaporama (0 disable the diaporama, and the minimum is 250)")
 		("loop,l", "After the last, go to first, and inverse")
 		("nointer", "Disable the keys")
+		("timeout", opt::value<Uint32>(&m_config.timeout_t)->default_value(0), "Time in seconds before end of the program (0 disable the timout)")
+		("noquit", "Need timeout, forbid quitting the program manually")
 		("hidemouse,h", "Hide the mouse")
 		;
 
@@ -124,6 +126,13 @@ bool ConfigLoader::load()
 
 	if( m_config.time < 250 )
 		m_config.time = 250;
+
+	if( m_config.timeout_t == 0 )
+		m_config.timeout = false;
+	else
+		m_config.timeout = true;
+
+	m_config.noquit = m_vm.count("noquit") && m_config.timeout;
 
 	m_config.fullscreen = m_vm.count("fullscreen") || m_vm.count("fullsize");
 	if( m_vm.count("size") && !m_vm.count("fullsize") )
