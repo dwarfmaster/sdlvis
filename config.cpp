@@ -282,6 +282,13 @@ void ConfigLoader::print()
 		std::cout << "\tDiaporama : " << (m_config.diap ? "yes" : "no") << std::endl;
 		if(m_config.diap)
 			std::cout << "\t\t-> time : " << m_config.time << std::endl;
+		std::cout << "\tTimeout : " << (m_config.timeout ? "yes" : "no") << std::endl;
+		if(m_config.timeout)
+		{
+			std::cout << "\t\t-> time : " << m_config.timeout_t << std::endl;
+			std::cout << "\t\t-> manual quit : " << (m_config.noquit ? "no" : "yes") << std::endl;
+		}
+		std::cout << "\tInteraction : " << (m_config.inter ? "yes" : "no") << std::endl;
 		std::cout << "\tFullscreen : " << (m_config.fullscreen ? "yes" : "no") << std::endl;
 		std::cout << "\tWindow size : " << m_config.size.w << "x" << m_config.size.h << std::endl;
 		std::cout << "\tPrepare pictures : " << (m_config.prep ? "yes" : "no") << std::endl;
