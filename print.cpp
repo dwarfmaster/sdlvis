@@ -8,7 +8,7 @@
 		std::cout << "\n" << std::endl; // Espace avant les messages de la suite
 
 	if( !mute() )
-		std::cout << "Chargements." << std::endl;
+		std::cout << "Loading elements." << std::endl;
 
 	loadWindow();
 	loadErr();
@@ -75,6 +75,9 @@ void Printer::run()
 
 Printer::~Printer()
 {
+	if( !mute() )
+		std::cout << "Stopping program." << std::endl;
+
 	SDL_FreeSurface(m_err);
 
 	if( m_config.text )
@@ -149,7 +152,7 @@ void Printer::loadTxt(Picture* pict, bool aa, size_t number)
 	name += pict->path.filename().string();
 
 	if( highverb() )
-		std::cout << "\t-> Loading text surface for " << name << std::endl;
+		std::cout << "\t-> Loading text surface \"" << name << "\"." << std::endl;
 	SDL_Surface* tmp = NULL;
 
 	if( aa )
@@ -229,6 +232,9 @@ bool Printer::prepare(Picture* pict, bool force_guard)
 		SDL_FreeSurface( pict->surf );
 		pict->surf = NULL;
 	}
+	
+	if( highverb() )
+		std::cout << "Prepared picture " << pict->path.filename().string() << " with redim factor (" << pict->redx << ";" << pict->redy << ")." << std::endl;
 
 	pict->prepared = true;
 	return true;
@@ -241,6 +247,9 @@ void Printer::load(Picture* pict, bool aa)
 		pict->surf = m_err;
 		return;
 	}
+
+	if( highverb() )
+		std::cout << "\tLoading picture " << pict->path << std::endl;
 	
 	SDL_Surface* tmp = NULL;
 	if( pict->surf == NULL)
@@ -251,7 +260,7 @@ void Printer::load(Picture* pict, bool aa)
 	if(tmp == NULL)
 	{
 		if( !mute() )
-			std::cout << "Erreur au chargement de l'image " << pict->path.string() << std::endl;
+			std::cout << "Error occured when loading the picture " << pict->path.string() << std::endl;
 		pict->surf = m_err;
 		pict->err = true;
 	}
@@ -263,7 +272,7 @@ void Printer::load(Picture* pict, bool aa)
 		if(pict->surf == NULL)
 		{
 			if( !mute() )
-				std::cout << "Erreur au redimentionnement de l'image " << pict->path.string() << std::endl;
+				std::cout << "Error occuring when redimentionned the picture " << pict->path.string() << std::endl;
 			pict->surf = m_err;
 		}
 		else
@@ -308,6 +317,9 @@ void Printer::next(bool ret)
 		}
 	}
 
+	if( highverb() )
+		std::cout << "Next to picture " << m_picts[m_act].path << std::endl;
+
 	update(last);
 }
 
@@ -323,6 +335,9 @@ void Printer::prev(bool ret)
 	}
 	else
 		--m_act;
+
+	if( highverb() )
+		std::cout << "Prev to picture " << m_picts[m_act].path << std::endl;
 
 	update(last);
 }
@@ -373,7 +388,7 @@ void Printer::update(size_t last)
 void Printer::loadWindow()
 {
 	if( !mute() )
-		std::cout << "Chargement de la fenêtre." << std::endl;
+		std::cout << "Loading window." << std::endl;
 
 	Uint32 flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 	if( m_config.fullscreen )
@@ -381,15 +396,18 @@ void Printer::loadWindow()
 	ecran = SDL_SetVideoMode(m_config.size.w, m_config.size.h, 32, flags);
 
 	if(ecran == NULL)
-		throw std::string("Erreur à l'ouverture de la fenêtre.");
+		throw std::string("Error occured when loading window.");
 }
 
 void Printer::loadErr()
 {
+	if( verbose() )
+		std::cout << "Loading error picture." << std::endl;
+
 	std::string path = m_config.dir.string() + "/err.png";
 	m_err = IMG_Load(path.c_str());
 	if(m_err == NULL)
-		throw std::string("Erreur au chargement de l'image d'erreur.");
+		throw std::string("Error when loading error picture.");
 }
 
 void Printer::loadDiap()
@@ -421,6 +439,8 @@ void Printer::loadFirst()
 
 void Printer::loadKeys(sdl::Event* event)
 {
+	if( verbose() )
+		std::cout << "Loading keys." << std::endl;
 	event->addQuitKey(SDLK_q);
 	event->addQuitKey(SDLK_ESCAPE);
 
@@ -464,6 +484,9 @@ void Printer::end()
 
 void Printer::loadTimeout()
 {
+	if( verbose() )
+		std::cout << "Setting timout." << std::endl;
+
 	m_timeout = new Timer( m_config.timeout_t * 1000,
 			boost::bind(&Printer::end, this) );
 }
