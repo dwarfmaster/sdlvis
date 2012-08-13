@@ -19,6 +19,11 @@ clean :
 
 rec : clean all
 
+install : all
+	@cp -v $(PROG) /home/luc/Prog/
+
+reinstall : rec install
+
 doc :
 	firefox ../../../Codesources/boost1.46-1.46.1/doc/html/program_options/tutorial.html > /dev/null 2>&1 &
 
