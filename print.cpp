@@ -82,9 +82,12 @@ Printer::~Printer()
 	if( !m_config.begin )
 	{
 		for(size_t i=0; i < m_picts.size(); ++i)
-			SDL_FreeSurface( m_picts[i].surf );
+		{
+			if( m_picts[i].surf != m_err )
+				SDL_FreeSurface( m_picts[i].surf );
+		}
 	}
-	else
+	else if( m_picts[m_act].surf != m_err )
 		SDL_FreeSurface( m_picts[m_act].surf );
 }
 
@@ -326,8 +329,11 @@ void Printer::update(size_t last)
 
 	if( !m_config.begin )
 	{
-		SDL_FreeSurface( m_picts[last].surf );
-		m_picts[last].surf = NULL;
+		if( m_picts[last].surf != m_err )
+		{
+			SDL_FreeSurface( m_picts[last].surf );
+			m_picts[last].surf = NULL;
+		}
 		load( &m_picts[m_act] );
 	}
 
