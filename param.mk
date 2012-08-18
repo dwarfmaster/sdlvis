@@ -1,0 +1,3 @@
+PROG=sdlvis
+VERSION=1.0
+
