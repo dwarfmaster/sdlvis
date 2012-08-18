@@ -1,8 +1,13 @@
+include param.mk
+
 OBJS=main.o print.o config.o timer.o
-PROG=sdlvis
-VERSION=\"1.0\"
+
 LDFLAGS=`sdl-config --libs` `pkg-config --libs SDLP_event SDLP_tools SDL_image SDL_gfx SDL_ttf` -lboost_system -lboost_filesystem -lboost_program_options
-CXXFLAGS=`sdl-config --cflags` `pkg-config --cflags SDLP_event SDLP_tools SDL_image SDL_gfx SDL_ttf` -Wall -g -std=gnu++0x -DVERSION=$(VERSION)
+CXXFLAGS=`sdl-config --cflags` `pkg-config --cflags SDLP_event SDLP_tools SDL_image SDL_gfx SDL_ttf` -Wall -g -std=gnu++0x -DVERSION=\"$(VERSION)\"
+
+PGDIR=/home/luc/Prog/
+RCDIR=/usr/share/sdlvis/
+RCS=font.ttf err.png
 
 all : $(OBJS)
 	g++ $(CXXFLAGS)	   -o $(PROG)	$^ $(LDFLAGS)
@@ -19,13 +24,20 @@ clean :
 
 rec : clean all
 
-install : all
-	@cp -v $(PROG) /home/luc/Prog/
+install : png all
+	@cp -v $(PROG) $(PGDIR)
+	@mkdir $(RCDIR)
+	@cp -v $(RCS) $(RCDIR)
 
-reinstall : rec install
+uninstall :
+	@touch $(PGDIR)$(PROG) $(RCDIR)
+	@rm -v $(PGDIR)$(PROG)
+	@rm -rv $(RCDIR)
 
-doc :
-	firefox ../../../Codesources/boost1.46-1.46.1/doc/html/program_options/tutorial.html > /dev/null 2>&1 &
+reinstall : uninstall png rec install
 
-example :
-	@echo ../../../Codesources/boost1.46-1.46.1/libs/program_options/example/multiple_sources.cpp
+png : err.svg
+	convert $< -size 800x600 err.png
+
+.PHONY: png
+
