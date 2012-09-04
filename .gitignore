@@ -1,0 +1,11 @@
+# .gitignore
+
+# compiled objects
+*.o
+*.so
+sdlvis
+
+# Ressources
+*.png
+*.cfg
+
