@@ -31,6 +31,10 @@
 #include "config.hpp"
 #include "timer.hpp"
 
+// DEFINE de scroll
+#define TIME_BETWEEN_SCROLL 200
+#define SCROLL_VALUE 3
+
 class Printer
 {
 	public:
@@ -83,11 +87,16 @@ class Printer
 		void end();
 		bool m_quit;
 
+		enum MoveDir{UP, DOWN, LEFT, RIGHT};
+		void move(MoveDir dir, const sdl::Event* ev);
+		void resetmv();
+		SDL_Rect m_dec; // Décalage de l'image par rapport au centre
+
 		SDL_Surface* ecran;
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur
 		TTF_Font* m_font;
 
-		enum{NEXT, PREV, FIRST, LAST, TOGGLE, TAA, NUMBER};
+		enum{NEXT, PREV, FIRST, LAST, TOGGLE, TAA, MVUP, MVDOWN, MVLEFT, MVRIGHT, NUMBER};
 		std::vector< sdl::AnEvent > m_keys;
 
 		size_t m_act;

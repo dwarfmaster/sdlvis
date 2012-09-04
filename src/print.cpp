@@ -44,6 +44,8 @@
 
 	if( !m_config.mouse )
 		SDL_ShowCursor( SDL_DISABLE );
+
+	resetmv();
 }
 
 void Printer::run()
@@ -73,6 +75,8 @@ void Printer::run()
 
 		pos.x = ecran->w / 2 - m_picts[m_act].surf->w / 2;
 		pos.y = ecran->h / 2 - m_picts[m_act].surf->h / 2;
+		pos.x += m_dec.x;
+		pos.y += m_dec.y;
 		SDL_BlitSurface(m_picts[m_act].surf, NULL, ecran, &pos);
 
 		if( m_config.text )
@@ -402,6 +406,8 @@ void Printer::update(size_t last)
 	std::string caption("sdlvis - ");
 	caption += m_picts[m_act].path.filename().string();
 	SDL_WM_SetCaption(caption.c_str(), NULL);
+
+	resetmv();
 }
 
 void Printer::loadWindow()
@@ -493,6 +499,26 @@ void Printer::loadKeys(sdl::Event* event)
 		m_keys[TAA].addKey(SDLK_a);
 		event->addPEvent( "toggle_aa", &m_keys[TAA],
 				boost::bind(&Printer::toggleAA, this) );
+		
+		m_keys[MVUP].addKey(SDLK_e);
+		event->addPEvent( "move_up", &m_keys[MVUP],
+				boost::bind(&Printer::move, this, UP, event),
+				boost::none, 0, TIME_BETWEEN_SCROLL );
+		
+		m_keys[MVDOWN].addKey(SDLK_d);
+		event->addPEvent( "move_down", &m_keys[MVDOWN],
+				boost::bind(&Printer::move, this, DOWN, event),
+				boost::none, 0, TIME_BETWEEN_SCROLL );
+		
+		m_keys[MVRIGHT].addKey(SDLK_f);
+		event->addPEvent( "move_right", &m_keys[MVRIGHT],
+				boost::bind(&Printer::move, this, RIGHT, event),
+				boost::none, 0, TIME_BETWEEN_SCROLL );
+		
+		m_keys[MVLEFT].addKey(SDLK_s);
+		event->addPEvent( "move_left", &m_keys[MVLEFT],
+				boost::bind(&Printer::move, this, LEFT, event),
+				boost::none, 0, TIME_BETWEEN_SCROLL );
 	}
 }
 
@@ -509,4 +535,37 @@ void Printer::loadTimeout()
 	m_timeout = new Timer( m_config.timeout_t * 1000,
 			boost::bind(&Printer::end, this) );
 }
+
+void Printer::move(MoveDir dir, const sdl::Event* ev)
+{
+	if( !m_picts[m_act].bigger
+			|| !m_config.real ) // Si l'image n'est pas plus grande, on ne la déplace pas
+		return;
+
+	unsigned int vit = SCROLL_VALUE;
+	if( ev->isKeyPressed(SDLK_v) )
+		vit *= 3;
+
+	switch(dir)
+	{
+		case UP:
+			m_dec.y -= vit;
+			break;
+		case DOWN:
+			m_dec.y += vit;
+			break;
+		case LEFT:
+			m_dec.x -= vit;
+			break;
+		case RIGHT:
+			m_dec.x += vit;
+			break;
+	}
+}
+
+void Printer::resetmv()
+{
+	m_dec.y = m_dec.x = 0;
+}
+
 
