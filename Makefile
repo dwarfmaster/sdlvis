@@ -15,7 +15,7 @@ rec : clean all
 
 install : png all
 	@cp -v $(PROG) $(PGDIR)
-	@mkdir $(RCDIR)
+	@mkdir -p $(RCDIR)
 	@cp -v $(RCS) $(RCDIR)
 
 uninstall :
@@ -28,5 +28,5 @@ reinstall : uninstall rec install
 png : err.svg
 	convert $< -size 800x600 err.png
 
-.PHONY: png
+.PHONY: png reinstall uninstall install rec clean all
 

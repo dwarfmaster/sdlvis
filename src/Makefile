@@ -21,4 +21,5 @@ clean :
 
 rec : clean all
 
+.PHONY: rec clean all 
 
