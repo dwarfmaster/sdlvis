@@ -29,6 +29,9 @@ Color::Color(Uint8 mr, Uint8 mg, Uint8 mb)
 
 Color::Color(const Color& cp)
 {
+	r = cp.r;
+	g = cp.g;
+	b = cp.b;
 }
 
 Color::Color(const std::string& src)
