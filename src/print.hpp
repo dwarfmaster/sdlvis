@@ -90,7 +90,9 @@ class Printer
 		enum MoveDir{UP, DOWN, LEFT, RIGHT};
 		void move(MoveDir dir, const sdl::Event* ev);
 		void resetmv();
-		SDL_Rect m_dec; // Décalage de l'image par rapport au centre
+		// SDL_Rect m_dec; // Décalage de l'image par rapport au centre
+		float m_xdec;
+		float m_ydec;
 
 		SDL_Surface* ecran;
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur

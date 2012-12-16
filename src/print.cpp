@@ -75,8 +75,8 @@ void Printer::run()
 
 		pos.x = ecran->w / 2 - m_picts[m_act].surf->w / 2;
 		pos.y = ecran->h / 2 - m_picts[m_act].surf->h / 2;
-		pos.x += m_dec.x;
-		pos.y += m_dec.y;
+		pos.x += static_cast<Sint16>(m_xdec);
+		pos.y += static_cast<Sint16>(m_ydec);
 		SDL_BlitSurface(m_picts[m_act].surf, NULL, ecran, &pos);
 
 		if( m_config.text )
@@ -549,23 +549,23 @@ void Printer::move(MoveDir dir, const sdl::Event* ev)
 	switch(dir)
 	{
 		case UP:
-			m_dec.y += vit;
+			m_ydec += vit;
 			break;
 		case DOWN:
-			m_dec.y -= vit;
+			m_ydec -= vit;
 			break;
 		case LEFT:
-			m_dec.x += vit;
+			m_xdec += vit;
 			break;
 		case RIGHT:
-			m_dec.x -= vit;
+			m_xdec -= vit;
 			break;
 	}
 }
 
 void Printer::resetmv()
 {
-	m_dec.y = m_dec.x = 0;
+	m_ydec = m_xdec = 0.0;
 }
 
 
