@@ -19,4 +19,62 @@
 
 #include "color.hpp"
 
+Color::Color()
+	: r(0), g(0), b(0)
+{}
+
+Color::Color(Uint8 mr, Uint8 mg, Uint8 mb)
+	: r(mr), g(mg), b(mb)
+{}
+
+Color::Color(const Color& cp)
+{
+}
+
+Color::Color(const std::string& src)
+{
+	// TODO
+}
+
+Color::Color(const SDL_Color& col)
+{
+	r = col.r;
+	b = col.b;
+	g = col.g;
+}
+
+Color::Color(Uint32 col)
+{
+	SDL_Surface* ecran = SDL_GetVideoSurface();
+	SDL_GetRGB(col, ecran->format, &r, &g, &b);
+}
+
+Color& Color::operator=(const Color& cp)
+{
+	r = cp.r;
+	b = cp.b;
+	g = cp.g;
+	return *this;
+}
+
+Uint32 Color::get32() const
+{
+	SDL_Surface* ecran = SDL_GetVideoSurface();
+	return SDL_MapRGB(ecran->format, r, g, b);
+}
+
+SDL_Color Color::getSdl() const
+{
+	SDL_Color ret;
+	ret.r = r;
+	ret.b = b;
+	ret.g = g;
+	return ret;
+}
+
+std::string Color::getHex() const
+{
+	// TODO
+}
+
 

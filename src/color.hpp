@@ -27,7 +27,7 @@ class Color
 {
 	public:
 		Color();
-		color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+		Color(Uint8 mr, Uint8 mg, Uint8 mb);
 		Color(const Color& cp);
 		Color(const std::string& src); // Hexadécimal, exemple : "0xFF0000" ou "FF0000"
 		Color(const SDL_Color& col);
@@ -39,8 +39,7 @@ class Color
 		SDL_Color getSdl() const;
 		std::string getHex() const;
 
-		// TODO
 	private:
-		Uint8 r,g,b,a;
+		Uint8 r,g,b;
 };
 
