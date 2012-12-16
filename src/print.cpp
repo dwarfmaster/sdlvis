@@ -65,6 +65,7 @@ void Printer::run()
 
 	m_quit = false;
 
+	m_lastTime = SDL_GetTicks();
 	while( !m_quit )
 	{
 		event.update();
@@ -92,6 +93,7 @@ void Printer::run()
 		if( m_config.timeout )
 			m_timeout->update();
 
+		m_lastTime = SDL_GetTicks();
 		SDL_Delay( 1000/30 );
 	}
 }

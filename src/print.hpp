@@ -95,6 +95,8 @@ class Printer
 		float m_ydec;
 		const float m_pixpermilli = 0.015;
 
+		Uint32 m_lastTime;
+
 		SDL_Surface* ecran;
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur
 		TTF_Font* m_font;
