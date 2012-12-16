@@ -31,10 +31,6 @@
 #include "config.hpp"
 #include "timer.hpp"
 
-// DEFINE de scroll
-#define TIME_BETWEEN_SCROLL 200
-#define SCROLL_VALUE 3
-
 class Printer
 {
 	public:
@@ -88,12 +84,12 @@ class Printer
 		bool m_quit;
 
 		enum MoveDir{UP, DOWN, LEFT, RIGHT};
-		void move(MoveDir dir, const sdl::Event* ev);
+		void move(const sdl::Event* ev);
 		void resetmv();
 		// SDL_Rect m_dec; // Décalage de l'image par rapport au centre
 		float m_xdec;
 		float m_ydec;
-		const float m_pixpermilli = 0.015;
+		const float m_pixpermilli = 0.05;
 
 		Uint32 m_lastTime;
 

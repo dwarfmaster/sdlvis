@@ -71,6 +71,7 @@ void Printer::run()
 		event.update();
 		if( m_config.diap )
 			m_diapTimer->update();
+		move(&event);
 
 		SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 0, 0, 0));
 
@@ -501,26 +502,6 @@ void Printer::loadKeys(sdl::Event* event)
 		m_keys[TAA].addKey(SDLK_a);
 		event->addPEvent( "toggle_aa", &m_keys[TAA],
 				boost::bind(&Printer::toggleAA, this) );
-		
-		m_keys[MVUP].addKey(SDLK_e);
-		event->addPEvent( "move_up", &m_keys[MVUP],
-				boost::bind(&Printer::move, this, UP, event),
-				boost::none, 0, TIME_BETWEEN_SCROLL );
-		
-		m_keys[MVDOWN].addKey(SDLK_d);
-		event->addPEvent( "move_down", &m_keys[MVDOWN],
-				boost::bind(&Printer::move, this, DOWN, event),
-				boost::none, 0, TIME_BETWEEN_SCROLL );
-		
-		m_keys[MVRIGHT].addKey(SDLK_f);
-		event->addPEvent( "move_right", &m_keys[MVRIGHT],
-				boost::bind(&Printer::move, this, RIGHT, event),
-				boost::none, 0, TIME_BETWEEN_SCROLL );
-		
-		m_keys[MVLEFT].addKey(SDLK_s);
-		event->addPEvent( "move_left", &m_keys[MVLEFT],
-				boost::bind(&Printer::move, this, LEFT, event),
-				boost::none, 0, TIME_BETWEEN_SCROLL );
 	}
 }
 
@@ -538,31 +519,21 @@ void Printer::loadTimeout()
 			boost::bind(&Printer::end, this) );
 }
 
-void Printer::move(MoveDir dir, const sdl::Event* ev)
+void Printer::move(const sdl::Event* ev)
 {
 	if( !m_picts[m_act].bigger
 			|| !m_config.real ) // Si l'image n'est pas plus grande, on ne la déplace pas
 		return;
 
-	unsigned int vit = SCROLL_VALUE;
+	Uint32 timeElapsed = SDL_GetTicks() - m_lastTime;
+	float vit = m_pixpermilli * timeElapsed;
 	if( ev->isKeyPressed(SDLK_v) )
 		vit *= 3;
 
-	switch(dir)
-	{
-		case UP:
-			m_ydec += vit;
-			break;
-		case DOWN:
-			m_ydec -= vit;
-			break;
-		case LEFT:
-			m_xdec += vit;
-			break;
-		case RIGHT:
-			m_xdec -= vit;
-			break;
-	}
+	if( ev->isKeyPressed(SDLK_e) ) m_ydec += vit;
+	if( ev->isKeyPressed(SDLK_d) ) m_ydec -= vit;
+	if( ev->isKeyPressed(SDLK_f) ) m_xdec -= vit;
+	if( ev->isKeyPressed(SDLK_s) ) m_xdec += vit;
 }
 
 void Printer::resetmv()
