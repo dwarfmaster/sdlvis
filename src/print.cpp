@@ -549,16 +549,16 @@ void Printer::move(MoveDir dir, const sdl::Event* ev)
 	switch(dir)
 	{
 		case UP:
-			m_dec.y -= vit;
-			break;
-		case DOWN:
 			m_dec.y += vit;
 			break;
+		case DOWN:
+			m_dec.y -= vit;
+			break;
 		case LEFT:
-			m_dec.x -= vit;
+			m_dec.x += vit;
 			break;
 		case RIGHT:
-			m_dec.x += vit;
+			m_dec.x -= vit;
 			break;
 	}
 }
