@@ -543,12 +543,27 @@ void Printer::resetmv()
 
 void Printer::zoomIn()
 {
-	// TODO
+	Picture& actual = m_picts[m_act];
+	float fact = actual.zfact + 0.1;
+	zoomReset();
+	actual.zoom = zoomSurface(actual.surf, fact, fact, actual.aa);
+
+	if( actual.zoom == NULL )
+		zoomReset();
 }
 
 void Printer::zoomOut()
 {
-	// TODO
+	Picture& actual = m_picts[m_act];
+	float fact = actual.zfact - 0.1;
+	if( fact <= 0.1 )
+		fact = 0.1;
+
+	zoomReset();
+	actual.zoom = zoomSurface(actual.surf, fact, fact, actual.aa);
+
+	if( actual.zoom == NULL )
+		zoomReset();
 }
 
 void Printer::zoomReset()
@@ -560,10 +575,4 @@ void Printer::zoomReset()
 	}
 	m_picts[m_act].zfact = 1.0;
 }
-
-void Printer::zoomFill()
-{
-	// TODO
-}
-
 

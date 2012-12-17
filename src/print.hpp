@@ -98,7 +98,6 @@ class Printer
 		void zoomIn();
 		void zoomOut();
 		void zoomReset();
-		void zoomFill();
 
 		Uint32 m_lastTime;
 
