@@ -258,7 +258,7 @@ bool Printer::prepare(Picture* pict, bool force_guard)
 		SDL_FreeSurface( pict->surf );
 		pict->surf = NULL;
 	}
-	
+
 	if( highverb() )
 		std::cout << "Prepared picture " << pict->path.filename().string() << " with redim factor (" << pict->redx << ";" << pict->redy << ")." << std::endl;
 
@@ -276,7 +276,7 @@ void Printer::load(Picture* pict, bool aa)
 
 	if( highverb() )
 		std::cout << "\tLoading picture " << pict->path << std::endl;
-	
+
 	SDL_Surface* tmp = NULL;
 	if( pict->surf == NULL)
 		tmp = IMG_Load( pict->path.string().c_str() );
@@ -539,6 +539,31 @@ void Printer::move(const sdl::Event* ev)
 void Printer::resetmv()
 {
 	m_ydec = m_xdec = 0.0;
+}
+
+void Printer::zoomIn()
+{
+	// TODO
+}
+
+void Printer::zoomOut()
+{
+	// TODO
+}
+
+void Printer::zoomReset()
+{
+	if( m_picts[m_act].zoom != NULL )
+	{
+		SDL_FreeSurface(m_picts[m_act].zoom);
+		m_picts[m_act].zoom = NULL;
+	}
+	m_picts[m_act].zfact = 1.0;
+}
+
+void Printer::zoomFill()
+{
+	// TODO
 }
 
 
