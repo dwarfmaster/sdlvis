@@ -541,8 +541,9 @@ void Printer::loadTimeout()
 
 void Printer::move(const sdl::Event* ev)
 {
-	if( !m_picts[m_act].bigger
-			|| !m_config.real ) // Si l'image n'est pas plus grande, on ne la déplace pas
+	if( !m_picts[m_act].zbigger
+			&& (!m_picts[m_act].bigger
+			|| !m_config.real) ) // Si l'image n'est pas plus grande, on ne la déplace pas
 		return;
 
 	Uint32 timeElapsed = SDL_GetTicks() - m_lastTime;
@@ -609,7 +610,7 @@ void Printer::zTestBigger()
 				|| actual.zoom->h >= ecran->h) )
 		actual.zbigger = true;
 	else
-		actual.zbigger = false;
+		actual.zbigger = actual.bigger;
 }
 
 void Printer::initZoom()
@@ -617,7 +618,7 @@ void Printer::initZoom()
 	for(size_t i=0; i < m_picts.size(); ++i)
 	{
 		m_picts[i].zoom = NULL;
-		m_picts[i].zbigger = false;
+		m_picts[i].zbigger = m_picts[i].bigger;
 		m_picts[i].zfact = 1.0;
 	}
 }
