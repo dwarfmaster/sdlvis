@@ -75,11 +75,12 @@ void Printer::run()
 
 		SDL_FillRect(ecran, NULL, m_config.bgcolor.get32());
 
-		pos.x = ecran->w / 2 - m_picts[m_act].surf->w / 2;
-		pos.y = ecran->h / 2 - m_picts[m_act].surf->h / 2;
+		SDL_Surface* toblit = (m_picts[m_act].zoom == NULL) ? m_picts[m_act].surf : m_picts[m_act].zoom;
+		pos.x = ecran->w / 2 - toblit->w / 2;
+		pos.y = ecran->h / 2 - toblit->h / 2;
 		pos.x += static_cast<Sint16>(m_xdec);
 		pos.y += static_cast<Sint16>(m_ydec);
-		SDL_BlitSurface(m_picts[m_act].surf, NULL, ecran, &pos);
+		SDL_BlitSurface(toblit, NULL, ecran, &pos);
 
 		if( m_config.text )
 		{
