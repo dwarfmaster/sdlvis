@@ -42,11 +42,11 @@ Color::Color(std::string src)
 	if( src.size() == 8 ) src.erase(0,2);
 
 	std::istringstream pr( src.substr(0,2) );
-	pr >> std::hex >> r;
+	pr >> std::hex >> (int&)r;
 	std::istringstream pg( src.substr(2,2) );
-	pg >> std::hex >> g;
+	pg >> std::hex >> (int&)g;
 	std::istringstream pb( src.substr(4,2) );
-	pb >> std::hex >> b;
+	pb >> std::hex >> (int&)b;
 }
 
 Color::Color(const SDL_Color& col)
