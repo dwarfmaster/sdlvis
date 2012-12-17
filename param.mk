@@ -1,3 +1,3 @@
 PROG=sdlvis
-VERSION=1.15
+VERSION=1.2
 
