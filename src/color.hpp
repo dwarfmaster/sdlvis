@@ -22,6 +22,7 @@
 
 #include <SDL/SDL.h>
 #include <string>
+#include <sstream>
 
 class Color
 {
@@ -29,7 +30,7 @@ class Color
 		Color();
 		Color(Uint8 mr, Uint8 mg, Uint8 mb);
 		Color(const Color& cp);
-		Color(const std::string& src); // Hexadécimal, exemple : "0xFF0000" ou "FF0000"
+		Color(std::string src); // Hexadécimal, exemple : "0xFF0000" ou "FF0000"
 		Color(const SDL_Color& col);
 		Color(Uint32 col);
 

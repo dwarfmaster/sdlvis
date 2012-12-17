@@ -34,9 +34,19 @@ Color::Color(const Color& cp)
 	b = cp.b;
 }
 
-Color::Color(const std::string& src)
+Color::Color(std::string src)
+	: r(0), g(0), b(0)
 {
-	// TODO
+	if( src.size() != 6 && src.size() != 8 ) return;
+	if( src.size() == 8 && src[0] != '0' && src[1] != 'x' ) return;
+	if( src.size() == 8 ) src.erase(0,2);
+
+	std::istringstream pr( src.substr(0,2) );
+	pr >> std::hex >> r;
+	std::istringstream pg( src.substr(2,2) );
+	pg >> std::hex >> g;
+	std::istringstream pb( src.substr(4,2) );
+	pb >> std::hex >> b;
 }
 
 Color::Color(const SDL_Color& col)
