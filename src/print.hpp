@@ -54,6 +54,10 @@ class Printer
 			bool prepared; // Évite de préparer 2 foix
 			bool aa;
 			bool err;
+
+			SDL_Surface* zoom; // == NULL si pas de zoom
+			bool zbigger; // Indique si la surface zoomée est plus grande que la fenêtre
+			float zfact;
 		};
 
 		config m_config;
@@ -90,6 +94,11 @@ class Printer
 		float m_xdec;
 		float m_ydec;
 		const float m_pixpermilli = 0.05;
+
+		void zoomIn();
+		void zoomOut();
+		void zoomReset();
+		void zoomFill();
 
 		Uint32 m_lastTime;
 
