@@ -73,7 +73,7 @@ void Printer::run()
 			m_diapTimer->update();
 		move(&event);
 
-		SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 0, 0, 0));
+		SDL_FillRect(ecran, NULL, m_config.bgcolor.get32());
 
 		pos.x = ecran->w / 2 - m_picts[m_act].surf->w / 2;
 		pos.y = ecran->h / 2 - m_picts[m_act].surf->h / 2;
