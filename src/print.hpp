@@ -99,6 +99,7 @@ class Printer
 		void zoomOut();
 		void zoomReset();
 		void zTestBigger();
+		void initZoom();
 
 		Uint32 m_lastTime;
 

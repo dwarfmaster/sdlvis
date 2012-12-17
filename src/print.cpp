@@ -46,6 +46,7 @@
 		SDL_ShowCursor( SDL_DISABLE );
 
 	resetmv();
+	initZoom();
 }
 
 void Printer::run()
@@ -609,5 +610,15 @@ void Printer::zTestBigger()
 		actual.zbigger = true;
 	else
 		actual.zbigger = false;
+}
+
+void Printer::initZoom()
+{
+	for(size_t i=0; i < m_picts.size(); ++i)
+	{
+		m_picts[i].zoom = NULL;
+		m_picts[i].zbigger = false;
+		m_picts[i].zfact = 1.0;
+	}
 }
 
