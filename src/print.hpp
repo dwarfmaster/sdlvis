@@ -98,6 +98,7 @@ class Printer
 		void zoomIn();
 		void zoomOut();
 		void zoomReset();
+		void zTestBigger();
 
 		Uint32 m_lastTime;
 
@@ -105,7 +106,7 @@ class Printer
 		SDL_Surface* m_err; // Image à afficher en cas d'erreur
 		TTF_Font* m_font;
 
-		enum{NEXT, PREV, FIRST, LAST, TOGGLE, TAA, MVUP, MVDOWN, MVLEFT, MVRIGHT, NUMBER};
+		enum{NEXT, PREV, FIRST, LAST, TOGGLE, TAA, MVUP, MVDOWN, MVLEFT, MVRIGHT, ZOOMIN, ZOOMOUT, ZOOMRESET, NUMBER};
 		std::vector< sdl::AnEvent > m_keys;
 
 		size_t m_act;

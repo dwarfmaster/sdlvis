@@ -502,6 +502,20 @@ void Printer::loadKeys(sdl::Event* event)
 		m_keys[TAA].addKey(SDLK_a);
 		event->addPEvent( "toggle_aa", &m_keys[TAA],
 				boost::bind(&Printer::toggleAA, this) );
+
+		m_keys[ZOOMIN].addKey(SDLK_m);
+		event->addPEvent( "zoom_in", &m_keys[ZOOMIN],
+				boost::bind(&Printer::zoomIn, this),
+				boost::none, 0, 100);
+
+		m_keys[ZOOMOUT].addKey(SDLK_l);
+		event->addPEvent( "zoom_out", &m_keys[ZOOMOUT],
+				boost::bind(&Printer::zoomOut, this),
+				boost::none, 0, 100);
+
+		m_keys[ZOOMRESET].addKey(SDLK_p);
+		event->addPEvent( "zoom_reset", &m_keys[ZOOMRESET],
+				boost::bind(&Printer::zoomReset, this) );
 	}
 }
 
@@ -547,9 +561,11 @@ void Printer::zoomIn()
 	float fact = actual.zfact + 0.1;
 	zoomReset();
 	actual.zoom = zoomSurface(actual.surf, fact, fact, actual.aa);
+	actual.zfact = fact;
 
 	if( actual.zoom == NULL )
 		zoomReset();
+	zTestBigger();
 }
 
 void Printer::zoomOut()
@@ -561,9 +577,11 @@ void Printer::zoomOut()
 
 	zoomReset();
 	actual.zoom = zoomSurface(actual.surf, fact, fact, actual.aa);
+	actual.zfact = fact;
 
 	if( actual.zoom == NULL )
 		zoomReset();
+	zTestBigger();
 }
 
 void Printer::zoomReset()
@@ -574,5 +592,17 @@ void Printer::zoomReset()
 		m_picts[m_act].zoom = NULL;
 	}
 	m_picts[m_act].zfact = 1.0;
+	zTestBigger();
+}
+
+void Printer::zTestBigger()
+{
+	Picture& actual = m_picts[m_act];
+	if( actual.zoom != NULL
+			&& (actual.zoom->w >= ecran->w
+				|| actual.zoom->h >= ecran->h) )
+		actual.zbigger = true;
+	else
+		actual.zbigger = false;
 }
 
