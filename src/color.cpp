@@ -87,7 +87,9 @@ SDL_Color Color::getSdl() const
 
 std::string Color::getHex() const
 {
-	// TODO
+	std::ostringstream oss;
+	oss << std::hex << r << g << b;
+	return oss.str();
 }
 
 
