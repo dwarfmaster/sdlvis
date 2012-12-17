@@ -44,3 +44,5 @@ class Color
 		Uint8 r,g,b;
 };
 
+#endif
+
