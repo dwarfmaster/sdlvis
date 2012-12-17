@@ -55,6 +55,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("timeout", opt::value<Uint32>(&m_config.timeout_t)->default_value(0), "Time in seconds before end of the program (0 disable the timout)")
 		("noquit", "Need timeout, forbid quitting the program manually")
 		("hidemouse,h", "Hide the mouse")
+		("bgcolor,b", opt::value<std::string>(), "The background color in his hexadecimal form.")
 		;
 
 	opt::options_description screen("Screen options");
@@ -137,6 +138,11 @@ bool ConfigLoader::load()
 	m_config.deform = m_vm.count("deform");
 	m_config.loop = m_vm.count("loop");
 	m_config.inter = !m_vm.count("nointer");
+
+	if( m_vm.count("bgcolor") )
+		m_config.bgcolor = Color(m_vm["bgcolor"].as<std::string>());
+	else
+		m_config.bgcolor = Color(0, 0, 0);
 
 	if( m_config.time == 0 )
 		m_config.diap = false;

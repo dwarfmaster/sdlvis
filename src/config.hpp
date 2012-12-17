@@ -30,6 +30,8 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/program_options.hpp>
 
+#include "color.hpp"
+
 namespace opt = boost::program_options;
 typedef boost::filesystem::path path_t;
 
@@ -39,6 +41,7 @@ struct config
 	bool ptext;
 	bool textaa; // Utiliser l'anti aliasing pour le texte
 	bool number; // Afficher son numéro
+	Color bgcolor; // Couleur de fond
 
 	SDL_Rect size; // Taille de la fenêtre
 	bool fullscreen; // Plein écran
