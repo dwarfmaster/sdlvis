@@ -132,6 +132,9 @@ Printer::~Printer()
 
 	if( m_config.timeout )
 		delete m_timeout;
+
+	for(m_act = 0; m_act < m_picts.size(); ++m_act)
+		zoomReset();
 }
 
 void Printer::load()
@@ -412,6 +415,7 @@ void Printer::update(size_t last)
 	SDL_WM_SetCaption(caption.c_str(), NULL);
 
 	resetmv();
+	zoomReset();
 }
 
 void Printer::loadWindow()
