@@ -56,6 +56,7 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 		("noquit", "Need timeout, forbid quitting the program manually")
 		("hidemouse,h", "Hide the mouse")
 		("bgcolor,b", opt::value<std::string>(), "The background color in his hexadecimal form.")
+		("dynamic-zoom,Z", "Enable manual zoom.")
 		;
 
 	opt::options_description screen("Screen options");
@@ -138,6 +139,7 @@ bool ConfigLoader::load()
 	m_config.deform = m_vm.count("deform");
 	m_config.loop = m_vm.count("loop");
 	m_config.inter = !m_vm.count("nointer");
+	m_config.dzoom = m_vm.count("dynamic-zoom");
 
 	if( m_vm.count("bgcolor") )
 		m_config.bgcolor = Color(m_vm["bgcolor"].as<std::string>());

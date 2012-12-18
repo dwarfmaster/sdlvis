@@ -50,6 +50,7 @@ struct config
 	bool real; // Faut-il laisser dépasser les images plus grandes
 	bool deform; // Déforme l'image pour remplir au mieux la fenêtre
 	bool inter; // Interactif
+	bool dzoom; // Autoriser le zoom dynamique
 	bool mouse; // Montrer la souri
 
 	bool diap; // Diaporama
