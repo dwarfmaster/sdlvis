@@ -46,7 +46,7 @@
 		SDL_ShowCursor( SDL_DISABLE );
 
 	resetmv();
-	initZoom();
+	initZoom(); // doit être appelé même quand il n'y a pas de zoom dynamique
 }
 
 void Printer::run()
@@ -509,19 +509,22 @@ void Printer::loadKeys(sdl::Event* event)
 		event->addPEvent( "toggle_aa", &m_keys[TAA],
 				boost::bind(&Printer::toggleAA, this) );
 
-		m_keys[ZOOMIN].addKey(SDLK_m);
-		event->addPEvent( "zoom_in", &m_keys[ZOOMIN],
-				boost::bind(&Printer::zoomIn, this),
-				boost::none, 0, 100);
+		if( m_config.dzoom )
+		{
+			m_keys[ZOOMIN].addKey(SDLK_m);
+			event->addPEvent( "zoom_in", &m_keys[ZOOMIN],
+					boost::bind(&Printer::zoomIn, this),
+					boost::none, 0, 100);
 
-		m_keys[ZOOMOUT].addKey(SDLK_l);
-		event->addPEvent( "zoom_out", &m_keys[ZOOMOUT],
-				boost::bind(&Printer::zoomOut, this),
-				boost::none, 0, 100);
+			m_keys[ZOOMOUT].addKey(SDLK_l);
+			event->addPEvent( "zoom_out", &m_keys[ZOOMOUT],
+					boost::bind(&Printer::zoomOut, this),
+					boost::none, 0, 100);
 
-		m_keys[ZOOMRESET].addKey(SDLK_p);
-		event->addPEvent( "zoom_reset", &m_keys[ZOOMRESET],
-				boost::bind(&Printer::zoomReset, this) );
+			m_keys[ZOOMRESET].addKey(SDLK_p);
+			event->addPEvent( "zoom_reset", &m_keys[ZOOMRESET],
+					boost::bind(&Printer::zoomReset, this) );
+		}
 	}
 }
 
@@ -543,7 +546,7 @@ void Printer::move(const sdl::Event* ev)
 {
 	if( !m_picts[m_act].zbigger
 			&& (!m_picts[m_act].bigger
-			|| !m_config.real) ) // Si l'image n'est pas plus grande, on ne la déplace pas
+				|| !m_config.real) ) // Si l'image n'est pas plus grande, on ne la déplace pas
 		return;
 
 	Uint32 timeElapsed = SDL_GetTicks() - m_lastTime;
