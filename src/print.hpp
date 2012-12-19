@@ -26,7 +26,6 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDLP_event.hpp>
-#include <SDLP_tools.hpp>
 
 #include "config.hpp"
 #include "timer.hpp"

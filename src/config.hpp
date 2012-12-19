@@ -21,7 +21,6 @@
 #define DEF_CONFIG
 
 #include <SDL/SDL.h>
-#include <SDLP_tools.hpp>
 #include <string>
 #include <vector>
 #include <boost/filesystem/path.hpp>
