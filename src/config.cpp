@@ -18,6 +18,7 @@
  */
 
 #include "config.hpp"
+#include "tools.hpp"
 
 ConfigLoader::ConfigLoader(int argc, char *argv[])
 	: m_desc("Allowed options")
@@ -209,7 +210,7 @@ SDL_Rect ConfigLoader::parseSize(const std::string& size)
 		if(k >= size.size())
 		{
 			unsigned int nb = 0;
-			nb = sdl::atoi(tmp);
+			nb = fromString<unsigned int>(tmp);
 			if(first)
 				rect.w = nb;
 			else
@@ -223,7 +224,7 @@ SDL_Rect ConfigLoader::parseSize(const std::string& size)
 				|| size[k] == 'x')
 		{
 			unsigned int nb = 0;
-			nb = sdl::atoi(tmp);
+			nb = fromString<unsigned int>(tmp);
 			if(first)
 			{
 				rect.w = nb;

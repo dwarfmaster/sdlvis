@@ -18,6 +18,7 @@
  */
 
 #include "print.hpp"
+#include "tools.hpp"
 
 
 	Printer::Printer(config conf)
@@ -174,9 +175,9 @@ void Printer::loadTxt(Picture* pict, bool aa, size_t number)
 	if( m_config.number )
 	{
 		name += "[";
-		name += sdl::itoa(number);
+		name += toString(number);
 		name += "/";
-		name += sdl::itoa( m_picts.size() );
+		name += toString( m_picts.size() );
 		name += "]> ";
 	}
 
