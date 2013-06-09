@@ -65,7 +65,7 @@ class Printer
 		void load();
 		bool prepare(Picture* pict, bool force_quard = false);
 		void load(Picture* pict, bool aa = true); // La picture doit être préparée avant
-		void loadTxt(Picture* pict, bool aa = false, size_t number=0);
+		void loadTxt(Picture* pict, size_t number=0);
 		void loadFont();
 		void loadWindow(); // Chargement de la fenêtre
 		void loadErr(); // Chargement de l'image d'erreur

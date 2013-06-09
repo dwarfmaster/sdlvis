@@ -38,7 +38,6 @@ struct config
 {
 	bool text; // Afficher le nom de l'image
 	bool ptext;
-	bool textaa; // Utiliser l'anti aliasing pour le texte
 	bool number; // Afficher son numéro
 	Color bgcolor; // Couleur de fond
 

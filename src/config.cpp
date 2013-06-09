@@ -45,7 +45,6 @@ ConfigLoader::ConfigLoader(int argc, char *argv[])
 	draw.add_options()
 		("text,t", "Print the name of the picture on the screen")
 		("pretext,T", "Preload the names of the pictures, enable text")
-		("aatext,A", "Use anti-aliasing for the text, enable text")
 		("number,n", "Print the numbre of the picture on the screen")
 		("redim,r", "Resize the pictures smaller than the screen")
 		("real,R", "No resize the pictures largest than the screen")
@@ -133,8 +132,7 @@ bool ConfigLoader::load()
 
 	m_config.number = m_vm.count("number");
 	m_config.ptext = m_vm.count("pretext");
-	m_config.textaa = m_vm.count("aatext");
-	m_config.text = m_vm.count("text") || m_config.ptext || m_config.textaa;
+	m_config.text = m_vm.count("text") || m_config.ptext;
 	m_config.redim = m_vm.count("redim");
 	m_config.real = m_vm.count("real");
 	m_config.deform = m_vm.count("deform");

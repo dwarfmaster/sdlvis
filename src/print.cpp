@@ -161,11 +161,11 @@ void Printer::load()
 		}
 
 		if( m_config.ptext ) // Si on doit charger le texte au démarrage
-			loadTxt( &m_picts[i], m_config.textaa, i + 1 );
+			loadTxt( &m_picts[i], i + 1 );
 	}
 }
 
-void Printer::loadTxt(Picture* pict, bool aa, size_t number)
+void Printer::loadTxt(Picture* pict, size_t number)
 {
 	SDL_Color fg;
 	fg.r = 255 - m_config.bgcolor.getSdl().r;
@@ -408,7 +408,7 @@ void Printer::update(size_t last)
 	{
 		SDL_FreeSurface( m_picts[last].txt );
 		m_picts[last].txt = NULL;
-		loadTxt( &m_picts[m_act], m_config.textaa, m_act + 1 );
+		loadTxt( &m_picts[m_act], m_act + 1 );
 	}
 
 	std::string caption("sdlvis - ");
@@ -461,7 +461,7 @@ void Printer::loadFirst()
 		load( &m_picts[m_act] );
 
 	if( m_config.text && !m_config.ptext )
-		loadTxt( &m_picts[m_act], m_config.textaa, m_act + 1 );
+		loadTxt( &m_picts[m_act], m_act + 1 );
 
 	if( m_config.diap )
 		m_diapTimer->reset();
