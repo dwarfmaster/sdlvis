@@ -168,7 +168,9 @@ void Printer::load()
 void Printer::loadTxt(Picture* pict, bool aa, size_t number)
 {
 	SDL_Color fg;
-	fg.r = fg.g = fg.b = 255;
+	fg.r = 255 - m_config.bgcolor.getSdl().r;
+	fg.g = 255 - m_config.bgcolor.getSdl().g;
+	fg.b = 255 - m_config.bgcolor.getSdl().b;
 
 	std::string name("");
 
@@ -187,10 +189,7 @@ void Printer::loadTxt(Picture* pict, bool aa, size_t number)
 		std::cout << "\t-> Loading text surface \"" << name << "\"." << std::endl;
 	SDL_Surface* tmp = NULL;
 
-	if( aa )
-		tmp = TTF_RenderText_Blended(m_font, name.c_str(), fg);
-	else
-		tmp = TTF_RenderText_Solid(m_font, name.c_str(), fg);
+	tmp = TTF_RenderText_Shaded(m_font, name.c_str(), fg, m_config.bgcolor.getSdl());
 
 	if( tmp == NULL ) // Si on n'arrive pas à charger le texte, on le désactive
 	{
